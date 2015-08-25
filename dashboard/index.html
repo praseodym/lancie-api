@@ -65,7 +65,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             <paper-menu class="list" attr-for-selected="data-route" selected="{{route}}" on-iron-select="onMenuSelect">
                 <!-- Drawer Toolbar -->
                 <paper-toolbar id="drawerToolbar">
-                    <span class="paper-font-title">Dashboard</span>
+                    <span class="paper-font-title">Web Resources</span>
                 </paper-toolbar>
 
                 <!-- Drawer Content -->
@@ -100,6 +100,26 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                     <iron-icon icon=""></iron-icon>
                     <span>About</span>
                 </paper-item>
+
+                <paper-toolbar id="drawerToolbar">
+                    <span class="paper-font-title">API Resources</span>
+                </paper-toolbar>
+
+                <paper-item data-route="/pages/mainpage/user" href="/pages/mainpage/user">
+                    <iron-icon icon="social:person"></iron-icon>
+                    <span>Users</span>
+                </paper-item>
+
+                <paper-item data-route="/pages/mainpage/team" href="/pages/mainpage/team">
+                    <iron-icon icon="social:group"></iron-icon>
+                    <span>Teams</span>
+                </paper-item>
+
+                <paper-item data-route="/pages/mainpage/seat" href="/pages/mainpage/seat">
+                    <iron-icon icon="notification:airline-seat-recline-normal"></iron-icon>
+                    <span>Seats</span>
+                </paper-item>
+
             </paper-menu>
         </div>
         <paper-header-panel main>
@@ -126,6 +146,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                             <dashboard-table></dashboard-table>
                         </paper-material>
                     </section>
+                    <section data-route="/pages/mainpage/user">
+                        <paper-material elevation="1">
+                            <dashboard-user-table></dashboard-user-table>
+                        </paper-material>
+                    </section>
+
                 </iron-pages>
             </div>
         </paper-header-panel>
