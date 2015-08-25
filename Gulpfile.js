@@ -20,7 +20,8 @@ var merge = require('merge-stream');
 var path = require('path');
 var fs = require('fs');
 var glob = require('glob');
-var historyApiFallback = require('connect-history-api-fallback');
+var gutil = require('gulp-util');
+var cache = require('gulp-cache');
 
 var AUTOPREFIXER_BROWSERS = [
   'ie >= 10',
@@ -36,13 +37,13 @@ var AUTOPREFIXER_BROWSERS = [
 
 var styleTask = function (stylesPath, srcs) {
   return gulp.src(srcs.map(function(src) {
-      return path.join('app', stylesPath, src);
+      return path.join('dashboard', stylesPath, src);
     }))
     .pipe($.changed(stylesPath, {extension: '.css'}))
     .pipe($.autoprefixer(AUTOPREFIXER_BROWSERS))
     .pipe(gulp.dest('.tmp/' + stylesPath))
     .pipe($.if('*.css', $.cssmin()))
-    .pipe(gulp.dest('dist/' + stylesPath))
+    .pipe(gulp.dest('static/' + stylesPath))
     .pipe($.size({title: stylesPath}));
 };
 
@@ -51,16 +52,29 @@ gulp.task('styles', function () {
   return styleTask('styles', ['**/*.css']);
 });
 
-gulp.task('elements', function () {
+gulp.task('elements', ['coffee-elements', 'sass-elements'], function () {
   return styleTask('elements', ['**/*.css']);
+});
+
+// Compile SASS and Coffee
+gulp.task('coffee-elements', function () {
+  return gulp.src('dashboard/elements/**/*.coffee')
+    .pipe($.coffee({bare: true}).on('error', gutil.log))
+    .pipe(gulp.dest('static/elements'));
+});
+
+gulp.task('sass-elements', function () {
+  return gulp.src('dashboard/elements/**/*.scss')
+    .pipe($.sass().on('error', gutil.log))
+    .pipe(gulp.dest('static/elements'));
 });
 
 // Lint JavaScript
 gulp.task('jshint', function () {
   return gulp.src([
-      'app/scripts/**/*.js',
-      'app/elements/**/*.js',
-      'app/elements/**/*.html'
+      'dashboard/scripts/**/*.js',
+      'dashboard/elements/**/*.js',
+      'dashboard/elements/**/*.html'
     ])
     .pipe(reload({stream: true, once: true}))
     .pipe($.jshint.extract()) // Extract JS from .html files
@@ -71,58 +85,59 @@ gulp.task('jshint', function () {
 
 // Optimize Images
 gulp.task('images', function () {
-  return gulp.src('app/images/**/*')
+  return gulp.src('dashboard/images/**/*')
     .pipe($.cache($.imagemin({
       progressive: true,
       interlaced: true
     })))
-    .pipe(gulp.dest('dist/images'))
+    .pipe(gulp.dest('static/images'))
     .pipe($.size({title: 'images'}));
 });
 
-// Copy All Files At The Root Level (app)
+// Copy All Files At The Root Level (dashboard)
 gulp.task('copy', function () {
-  var app = gulp.src([
-    'app/*',
-    '!app/test',
-    '!app/precache.json'
+  var dashboard = gulp.src([
+    'dashboard/*',
+    '!dashboard/test',
+    '!dashboard/precache.json',
+    'node_modules/apache-server-configs/dist/.htaccess'
   ], {
     dot: true
-  }).pipe(gulp.dest('dist'));
+  }).pipe(gulp.dest('static'));
 
   var bower = gulp.src([
     'bower_components/**/*'
-  ]).pipe(gulp.dest('dist/bower_components'));
+  ]).pipe(gulp.dest('static/bower_components'));
 
-  var elements = gulp.src(['app/elements/**/*.html'])
-    .pipe(gulp.dest('dist/elements'));
+  var elements = gulp.src(['dashboard/elements/**/*.html'])
+    .pipe(gulp.dest('static/elements'));
 
   var swBootstrap = gulp.src(['bower_components/platinum-sw/bootstrap/*.js'])
-    .pipe(gulp.dest('dist/elements/bootstrap'));
+    .pipe(gulp.dest('static/elements/bootstrap'));
 
   var swToolbox = gulp.src(['bower_components/sw-toolbox/*.js'])
-    .pipe(gulp.dest('dist/sw-toolbox'));
+    .pipe(gulp.dest('static/sw-toolbox'));
 
-  var vulcanized = gulp.src(['app/elements/elements.html'])
+  var vulcanized = gulp.src(['dashboard/elements/elements.html'])
     .pipe($.rename('elements.vulcanized.html'))
-    .pipe(gulp.dest('dist/elements'));
+    .pipe(gulp.dest('static/elements'));
 
-  return merge(app, bower, elements, vulcanized, swBootstrap, swToolbox)
+  return merge(dashboard, bower, elements, vulcanized, swBootstrap, swToolbox)
     .pipe($.size({title: 'copy'}));
 });
 
 // Copy Web Fonts To Dist
 gulp.task('fonts', function () {
-  return gulp.src(['app/fonts/**'])
-    .pipe(gulp.dest('dist/fonts'))
+  return gulp.src(['dashboard/fonts/**'])
+    .pipe(gulp.dest('static/fonts'))
     .pipe($.size({title: 'fonts'}));
 });
 
 // Scan Your HTML For Assets & Optimize Them
 gulp.task('html', function () {
-  var assets = $.useref.assets({searchPath: ['.tmp', 'app', 'dist']});
+  var assets = $.useref.assets({searchPath: ['.tmp', 'dashboard', 'static']});
 
-  return gulp.src(['app/**/*.html', '!app/{elements,test}/**/*.html'])
+  return gulp.src(['dashboard/**/*.html', '!dashboard/{elements,test}/**/*.html'])
     // Replace path for vulcanized assets
     .pipe($.if('*.html', $.replace('elements/elements.html', 'elements/elements.vulcanized.html')))
     .pipe(assets)
@@ -140,17 +155,18 @@ gulp.task('html', function () {
       spare: true
     })))
     // Output Files
-    .pipe(gulp.dest('dist'))
+    .pipe(gulp.dest('static'))
     .pipe($.size({title: 'html'}));
 });
 
 // Vulcanize imports
 gulp.task('vulcanize', function () {
-  var DEST_DIR = 'dist/elements';
+  var DEST_DIR = 'static/elements';
 
-  return gulp.src('dist/elements/elements.vulcanized.html')
+  return gulp.src('static/elements/elements.vulcanized.html')
     .pipe($.vulcanize({
-      stripComments: true,
+      dest: DEST_DIR,
+      strip: true,
       inlineCss: true,
       inlineScripts: true
     }))
@@ -161,13 +177,13 @@ gulp.task('vulcanize', function () {
 // Generate a list of files that should be precached when serving from 'dist'.
 // The list will be consumed by the <platinum-sw-cache> element.
 gulp.task('precache', function (callback) {
-  var dir = 'dist';
+  var dir = 'static';
 
   glob('{elements,scripts,styles}/**/*.*', {cwd: dir}, function(error, files) {
     if (error) {
       callback(error);
     } else {
-      files.push('index.html', './', 'bower_components/webcomponentsjs/webcomponents-lite.min.js');
+      files.push('index.html', './', 'bower_components/webcomponentsjs/webcomponents.min.js');
       var filePath = path.join(dir, 'precache.json');
       fs.writeFile(filePath, JSON.stringify(files), callback);
     }
@@ -175,60 +191,44 @@ gulp.task('precache', function (callback) {
 });
 
 // Clean Output Directory
-gulp.task('clean', del.bind(null, ['.tmp', 'dist']));
+gulp.task('clean', function() {
+  del.bind(null, ['.tmp', 'static']);
+  cache.clearAll();
+});
 
 // Watch Files For Changes & Reload
 gulp.task('serve', ['styles', 'elements', 'images'], function () {
   browserSync({
     notify: false,
-    logPrefix: 'PSK',
-    snippetOptions: {
-      rule: {
-        match: '<span id="browser-sync-binding"></span>',
-        fn: function (snippet) {
-          return snippet;
-        }
-      }
-    },
     // Run as an https by uncommenting 'https: true'
     // Note: this uses an unsigned certificate which on first access
     //       will present a certificate warning in the browser.
     // https: true,
     server: {
-      baseDir: ['.tmp', 'app'],
-      middleware: [ historyApiFallback() ],
+      baseDir: ['.tmp', 'dashboard'],
       routes: {
         '/bower_components': 'bower_components'
       }
     }
   });
 
-  gulp.watch(['app/**/*.html'], reload);
-  gulp.watch(['app/styles/**/*.css'], ['styles', reload]);
-  gulp.watch(['app/elements/**/*.css'], ['elements', reload]);
-  gulp.watch(['app/{scripts,elements}/**/*.js'], ['jshint']);
-  gulp.watch(['app/images/**/*'], reload);
+  gulp.watch(['dashboard/**/*.html'], reload);
+  gulp.watch(['dashboard/styles/**/*.{css}'], ['styles', reload]);
+  gulp.watch(['dashboard/elements/**/*.scss'], ['elements', reload]);
+  gulp.watch(['dashboard/elements/**/*.coffee'], ['coffee-elements', reload]);
+  gulp.watch(['dashboard/{scripts,elements}/**/*.js'], ['jshint']);
+  gulp.watch(['dashboard/images/**/*'], reload);
 });
 
-// Build and serve the output from the dist build
-gulp.task('serve:dist', ['default'], function () {
+// Build and serve the output from the static build
+gulp.task('serve:static', ['default'], function () {
   browserSync({
     notify: false,
-    logPrefix: 'PSK',
-    snippetOptions: {
-      rule: {
-        match: '<span id="browser-sync-binding"></span>',
-        fn: function (snippet) {
-          return snippet;
-        }
-      }
-    },
     // Run as an https by uncommenting 'https: true'
     // Note: this uses an unsigned certificate which on first access
     //       will present a certificate warning in the browser.
     // https: true,
-    server: 'dist',
-    middleware: [ historyApiFallback() ]
+    server: 'static'
   });
 });
 
@@ -238,14 +238,13 @@ gulp.task('default', ['clean'], function (cb) {
     ['copy', 'styles'],
     'elements',
     ['jshint', 'images', 'fonts', 'html'],
-    'vulcanize',
+     'precache',
     cb);
-    // Note: add , 'precache' , after 'vulcanize', if your are going to use Service Worker
 });
 
 // Load tasks for web-component-tester
 // Adds tasks for `gulp test:local` and `gulp test:remote`
-require('web-component-tester').gulp.init(gulp);
+try { require('web-component-tester').gulp.init(gulp); } catch (err) {}
 
 // Load custom tasks from the `tasks` directory
 try { require('require-dir')('tasks'); } catch (err) {}

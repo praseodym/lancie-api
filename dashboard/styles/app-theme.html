@@ -51,10 +51,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     color: var(--secondary-text-color);
     background-color: var(--drawer-menu-color);
     border-bottom: var(--drawer-toolbar-border-color);
-  }
-
-  paper-scroll-header-panel {
-    height: 100%;
+    height: 64px;
   }
 
   paper-material {
@@ -97,29 +94,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     padding: 0 16px;
   }
 
-  paper-toolbar.tall .app-name {
-    font-size: 40px;
-    font-weight: 300;
-    /* Required for main area's paper-scroll-header-panel custom condensing transformation */
-    -webkit-transform-origin: left center;
-    transform-origin: left center;
-  }
-
-  #mainToolbar .middle-container  {
-    height: 100%;
+  #mainToolbar .middle {
     margin-left: 48px;
   }
 
-  #mainToolbar:not(.tall) .middle {
-    font-size: 18px;
+  #mainToolbar.has-shadow .middle {
+    font-size: 20px;
     padding-bottom: 0;
-  }
-
-  #mainToolbar .bottom {
     margin-left: 48px;
-    /* Required for main area's paper-scroll-header-panel custom condensing transformation */
-    -webkit-transform-origin: left center;
-    transform-origin: left center;
   }
 
   /* Height of the scroll area */
@@ -143,9 +125,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       font-size: 12px;
     }
 
-    paper-toolbar.tall .app-name {
-      font-size: 24px;
-      font-weight: 400;
+    .app-name {
+      font-size: 26px;
     }
 
     #drawer .paper-toolbar {

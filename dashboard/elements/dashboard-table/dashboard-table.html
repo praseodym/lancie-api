@@ -1,0 +1,75 @@
+<!--
+@license
+Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<link rel="import" href="/bower_components/polymer/polymer.html">
+
+<link rel="import" href="/bower_components/iron-icons/iron-icons.html">
+
+<link rel="import" href="/bower_components/paper-checkbox/paper-checkbox.html">
+<link rel="import" href="/bower_components/paper-button/paper-button.html">
+<link rel="import" href="/bower_components/paper-icon-button/paper-icon-button.html">
+
+<dom-module id="dashboard-table">
+    <link rel="stylesheet" href="dashboard-table.css"/>
+    <template>
+        <table id="element-table">
+            <thead>
+                <tr class="title">
+                    <th colspan="3">
+                        <template is="dom-if" if="{{count}}">
+                            <span>{{count}}</span> Item(s) selected
+                        </template>
+                    </th>
+                    <th colspan="2">
+                        <paper-icon-button icon="icons:add" on-tap="addNewItem"></paper-icon-button>
+                        <paper-icon-button icon="icons:delete" on-tap="deleteSelection"></paper-icon-button>
+                    </th>
+                </tr>
+                <tr class="header">
+                    <th class="checkbox"><paper-checkbox id="checkAll"></paper-checkbox></th>
+                    <th class="name">Tournament</th>
+                    <th class="description">Sponsors</th>
+                    <th class="tags">Tags</th>
+                    <th class="actions">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- REPEAT DATA-->
+                <tr tabindex="0">
+                    <td class="checkbox"><paper-checkbox></paper-checkbox></td>
+                    <td class="name">Counter Strike: Global Offensive</td>
+                    <td class="description relative">Common behaviors across the paper elements</td>
+                    <td class="tags">
+                        golden
+                    </td>
+                    <td class="actions"></td>
+                </tr><tr tabindex="0">
+                    <td class="checkbox"><paper-checkbox></paper-checkbox></td>
+                    <td class="name">Counter Strike: Global Offensive</td>
+                    <td class="description relative">Common behaviors across the paper elements</td>
+                    <td class="tags">
+                        golden
+                    </td>
+                    <td class="actions"></td>
+                </tr><tr tabindex="0">
+                    <td class="checkbox"><paper-checkbox></paper-checkbox></td>
+                    <td class="name">Counter Strike: Global Offensive</td>
+                    <td class="description relative">Common behaviors across the paper elements</td>
+                    <td class="tags">
+                        golden
+                    </td>
+                    <td class="actions"></td>
+                </tr>
+            </tbody>
+        </table>
+    </template>
+
+</dom-module>
+<script src="dashboard-table.js"></script>

@@ -62,6 +62,13 @@ crashlytics-build.properties
 
 src/test/resources/application.properties
 
+# Polymer
 node_modules
 dist
 .tmp
+test/temp
+bower_components
+test/bower_components/
+static/*
+.DS_Store
+
