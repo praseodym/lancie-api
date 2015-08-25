@@ -197,7 +197,7 @@ gulp.task('clean', function() {
 });
 
 // Watch Files For Changes & Reload
-gulp.task('serve', ['styles', 'elements', 'images'], function () {
+gulp.task('serve', ['styles', 'elements', 'images','fonts', 'html'], function () {
   browserSync({
     notify: false,
     // Run as an https by uncommenting 'https: true'
@@ -205,14 +205,14 @@ gulp.task('serve', ['styles', 'elements', 'images'], function () {
     //       will present a certificate warning in the browser.
     // https: true,
     server: {
-      baseDir: ['.tmp', 'dashboard'],
+      baseDir: ['static'],
       routes: {
         '/bower_components': 'bower_components'
       }
     }
   });
 
-  gulp.watch(['dashboard/**/*.html'], reload);
+  gulp.watch(['dashboard/**/*.html'], ['copy', reload]);
   gulp.watch(['dashboard/styles/**/*.{css}'], ['styles', reload]);
   gulp.watch(['dashboard/elements/**/*.scss'], ['elements', reload]);
   gulp.watch(['dashboard/elements/**/*.coffee'], ['coffee-elements', reload]);
