@@ -15,7 +15,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <meta charset="utf-8">
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="generator" content="Polymer Starter Kit"/>
+    <meta name="generator" content="Polymer Starter Kit" />
     <title>Polymer Starter Kit</title>
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
 
@@ -56,126 +56,144 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 </head>
 
 <body unresolved class="fullbleed layout vertical">
-<span id="browser-sync-binding"></span>
-<template is="dom-bind" id="app">
+    <span id="browser-sync-binding"></span>
+    <template is="dom-bind" id="app">
 
-    <paper-drawer-panel id="paperDrawerPanel">
+        <paper-drawer-panel id="paperDrawerPanel">
 
-        <div drawer>
-            <paper-menu class="list" attr-for-selected="data-route" selected="{{route}}" on-iron-select="onMenuSelect">
-                <!-- Drawer Toolbar -->
-                <paper-toolbar id="drawerToolbar">
-                    <span class="paper-font-title">Web Resources</span>
-                </paper-toolbar>
+            <div drawer>
+                <paper-menu class="list" attr-for-selected="data-route" selected="{{route}}"
+                            on-iron-select="onMenuSelect">
+                    <!-- Drawer Toolbar -->
+                    <paper-toolbar id="drawerToolbar">
+                        <span class="paper-font-title">Web Resources</span>
+                    </paper-toolbar>
 
-                <!-- Drawer Content -->
-                <!--<paper-menu>-->
-                <paper-item data-route="home" href=/">
-                    <iron-icon icon=""></iron-icon>
-                    <span>Home</span>
-                </paper-item>
+                    <!-- Drawer Content -->
+                    <!--<paper-menu>-->
+                    <paper-item data-route="home" href=/">
+                        <iron-icon icon=""></iron-icon>
+                        <span>Home</span>
+                    </paper-item>
 
 
-                <paper-item data-route="/pages/mainpage/sponsors" href="/pages/mainpage/sponsors">
-                    <iron-icon icon=""></iron-icon>
-                    <span>Sponsors</span>
-                </paper-item>
+                    <paper-item data-route="/pages/mainpage/sponsors" href="/pages/mainpage/sponsors">
+                        <iron-icon icon=""></iron-icon>
+                        <span>Sponsors</span>
+                    </paper-item>
 
-                <paper-item data-route="/pages/mainpage/event" href="/pages/mainpage/event">
-                    <iron-icon icon=""></iron-icon>
-                    <span>Event</span>
-                </paper-item>
+                    <paper-item data-route="/pages/mainpage/event" href="/pages/mainpage/event">
+                        <iron-icon icon=""></iron-icon>
+                        <span>Event</span>
+                    </paper-item>
 
-                <paper-item data-route="/pages/mainpage/tournament" href="/pages/mainpage/tournament">
-                    <iron-icon icon=""></iron-icon>
-                    <span>Tournaments</span>
-                </paper-item>
+                    <paper-item data-route="/pages/mainpage/tournament" href="/pages/mainpage/tournament">
+                        <iron-icon icon=""></iron-icon>
+                        <span>Tournaments</span>
+                    </paper-item>
 
-                <paper-item data-route="/pages/mainpage/gamemaster" href="/pages/mainpage/gamemaster">
-                    <iron-icon icon=""></iron-icon>
-                    <span>GameMaster</span>
-                </paper-item>
+                    <paper-item data-route="/pages/mainpage/gamemaster" href="/pages/mainpage/gamemaster">
+                        <iron-icon icon=""></iron-icon>
+                        <span>GameMaster</span>
+                    </paper-item>
 
-                <paper-item data-route="/pages/mainpage/about" href="/pages/mainpage/about">
-                    <iron-icon icon=""></iron-icon>
-                    <span>About</span>
-                </paper-item>
+                    <paper-item data-route="/pages/mainpage/about" href="/pages/mainpage/about">
+                        <iron-icon icon=""></iron-icon>
+                        <span>About</span>
+                    </paper-item>
 
-                <paper-toolbar id="drawerToolbar">
-                    <span class="paper-font-title">API Resources</span>
-                </paper-toolbar>
+                    <paper-toolbar id="drawerToolbar">
+                        <span class="paper-font-title">API Resources</span>
+                    </paper-toolbar>
 
-                <paper-item data-route="/pages/mainpage/user" href="/pages/mainpage/user">
-                    <iron-icon icon="social:person"></iron-icon>
-                    <span>Users</span>
-                </paper-item>
+                    <paper-item data-route="/pages/mainpage/user" href="/pages/mainpage/user">
+                        <iron-icon icon="social:person"></iron-icon>
+                        <span>Users</span>
+                    </paper-item>
 
-                <paper-item data-route="/pages/mainpage/team" href="/pages/mainpage/team">
-                    <iron-icon icon="social:group"></iron-icon>
-                    <span>Teams</span>
-                </paper-item>
+                    <paper-item data-route="/pages/mainpage/team" href="/pages/mainpage/team">
+                        <iron-icon icon="social:group"></iron-icon>
+                        <span>Teams</span>
+                    </paper-item>
 
-                <paper-item data-route="/pages/mainpage/seat" href="/pages/mainpage/seat">
-                    <iron-icon icon="notification:airline-seat-recline-normal"></iron-icon>
-                    <span>Seats</span>
-                </paper-item>
+                    <paper-item data-route="/pages/mainpage/seat" href="/pages/mainpage/seat">
+                        <iron-icon icon="notification:airline-seat-recline-normal"></iron-icon>
+                        <span>Seats</span>
+                    </paper-item>
 
-            </paper-menu>
-        </div>
-        <paper-header-panel main>
-
-            <!-- Main Toolbar -->
-            <paper-toolbar id="mainToolbar">
-                <div class="title">{{route}}</div>
-
-                <div class="loginName">Laisiotr</div>
-                <paper-icon-button icon="icons:exit-to-app" on-tap="moreAction"
-                                   style="color: #f44336;"></paper-icon-button>
-            </paper-toolbar>
-
-            <!-- Main Content -->
-            <div class="content">
-                <iron-pages attr-for-selected="data-route" selected="{{route}}">
-                    <section data-route="home">
-                        <paper-material elevation="1">
-                            dashboard
-                        </paper-material>
-                    </section>
-                    <section data-route="/pages/mainpage/tournament">
-                        <paper-material elevation="1">
-                            <dashboard-table></dashboard-table>
-                        </paper-material>
-                    </section>
-                    <section data-route="/pages/mainpage/user">
-                        <paper-material elevation="1">
-                            <dashboard-user-table></dashboard-user-table>
-                        </paper-material>
-                    </section>
-
-                </iron-pages>
+                </paper-menu>
             </div>
-        </paper-header-panel>
-    </paper-drawer-panel>
+            <paper-header-panel main>
 
-    <paper-toast id="caching-complete"
-                 duration="6000"
-                 text="Caching complete! This app will work offline.">
-    </paper-toast>
+                <!-- Main Toolbar -->
+                <paper-toolbar id="mainToolbar">
+                    <div class="title">{{route}}</div>
 
-    <platinum-sw-register auto-register
-                          clients-claim
-                          skip-waiting
-                          on-service-worker-installed="displayInstalledToast">
-        <platinum-sw-cache default-cache-strategy="networkFirst"
-                           precache-file="precache.json">
-        </platinum-sw-cache>
-    </platinum-sw-register>
+                    <div class="loginName">Laisiotr</div>
+                    <paper-icon-button icon="icons:exit-to-app" on-tap="moreAction"
+                                       style="color: #f44336;"></paper-icon-button>
+                </paper-toolbar>
 
-</template>
+                <!-- Main Content -->
+                <div class="content">
+                    <iron-pages attr-for-selected="data-route" selected="{{route}}">
+                        <section data-route="home">
+                            <paper-material elevation="1">
+                                dashboard
+                            </paper-material>
+                        </section>
+                        <section data-route="/pages/mainpage/tournament">
+                            <paper-material elevation="1">
+                                <dashboard-table></dashboard-table>
+                            </paper-material>
+                        </section>
+                        <section data-route="/pages/mainpage/user">
+                            <paper-material elevation="1">
+                                <dashboard-user-table></dashboard-user-table>
 
-<!-- build:js scripts/app.js -->
-<script src="scripts/app.js"></script>
-<!-- endbuild-->
+                                <paper-dialog id="createUserDialog">
+                                    <h2>Dialog Title</h2>
+
+                                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
+                                        incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis
+                                        nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                                        Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
+                                        fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
+                                        culpa qui officia deserunt mollit anim id est laborum.</p>
+
+                                    <div class="buttons">
+                                        <paper-button>More Info...</paper-button>
+                                        <paper-button dialog-dismiss>Decline</paper-button>
+                                        <paper-button dialog-confirm autofocus>Accept</paper-button>
+                                    </div>
+                                </paper-dialog>
+                            </paper-material>
+                        </section>
+
+                    </iron-pages>
+                </div>
+            </paper-header-panel>
+        </paper-drawer-panel>
+
+        <paper-toast id="caching-complete"
+                     duration="6000"
+                     text="Caching complete! This app will work offline.">
+        </paper-toast>
+
+        <platinum-sw-register auto-register
+                              clients-claim
+                              skip-waiting
+                              on-service-worker-installed="displayInstalledToast">
+            <platinum-sw-cache default-cache-strategy="networkFirst"
+                               precache-file="precache.json">
+            </platinum-sw-cache>
+        </platinum-sw-register>
+
+    </template>
+
+    <!-- build:js scripts/app.js -->
+    <script src="scripts/app.js"></script>
+    <!-- endbuild-->
 </body>
 
 </html>
