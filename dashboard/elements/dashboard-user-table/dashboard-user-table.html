@@ -15,10 +15,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="/bower_components/paper-checkbox/paper-checkbox.html">
 <link rel="import" href="/bower_components/paper-button/paper-button.html">
 <link rel="import" href="/bower_components/paper-icon-button/paper-icon-button.html">
-<link rel="import" href="/bower_components/iron-ajax/iron-ajax.html" />
+<link rel="import" href="/bower_components/iron-ajax/iron-ajax.html"/>
 
 <dom-module id="dashboard-user-table">
-    <link rel="stylesheet" href="dashboard-user-table.css" />
+    <link rel="stylesheet" href="dashboard-user-table.css"/>
 
     <template>
         <iron-ajax
@@ -32,44 +32,58 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         <table id="element-table">
             <thead>
-                <tr class="title">
-                    <th colspan="3">
-                        <template is="dom-if" if="{{count}}">
-                            <span>{{count}}</span> Item(s) selected
-                        </template>
-                    </th>
-                    <th colspan="2">
-                        <paper-icon-button icon="icons:add" on-tap="addNewItem"></paper-icon-button>
-                        <paper-icon-button icon="icons:delete" on-tap="deleteSelection"></paper-icon-button>
-                    </th>
-                </tr>
-                <tr class="header">
-                    <th class="checkbox">
-                        <paper-checkbox id="checkAll"></paper-checkbox>
-                    </th>
-                    <th>id</th>
-                    <th>Username</th>
-                    <th>Email</th>
-                    <th>Displayname</th>
-                    <th class="name">Tournament</th>
-                    <th class="description">Sponsors</th>
-                    <th class="tags">Tags</th>
-                    <th class="actions">Action</th>
-                </tr>
+            <tr class="title">
+                <th colspan="7">
+                    <template is="dom-if" if="{{count}}">
+                        <span>{{count}}</span> Item(s) selected
+                    </template>
+                </th>
+                <th colspan="5">
+                    <paper-icon-button icon="icons:add" on-tap="addNewItem"></paper-icon-button>
+                    <paper-icon-button icon="icons:delete" on-tap="deleteSelection"></paper-icon-button>
+                </th>
+            </tr>
+            <tr class="header">
+                <th class="checkbox">
+                    <paper-checkbox id="checkAll"></paper-checkbox>
+                </th>
+                <th>id</th>
+                <th>Username</th>
+                <th>Email</th>
+                <th>Displayname</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Gender</th>
+                <th>Adress</th>
+                <th>Phone</th>
+                <th>Notes</th>
+                <th class="actions">Action</th>
+            </tr>
             </thead>
             <tbody>
-                <!-- REPEAT DATA-->
-                <template is="dom-repeat" items="{{data}}">
-                    <tr data-userid="{{item.id}}">
-                        <td class="checkbox">
-                            <paper-checkbox></paper-checkbox>
-                        </td>
-                        <td class="name">{{item.username}}</td>
-                        <td class="description relative">{{item.email}}</td>
-                        <td class="tags">{{item.role}}</td>
-                        <td class="actions"></td>
-                    </tr>
-                </template>
+            <!-- REPEAT DATA-->
+            <template is="dom-repeat" items="{{data}}">
+                <tr data-userid="{{item.id}}">
+                    <td class="checkbox">
+                        <paper-checkbox></paper-checkbox>
+                    </td>
+                    <td>{{item.id}}</td>
+                    <td>{{item.username}}</td>
+                    <td>{{item.email}}</td>
+                    <td>{{item.profile.displayName}}</td>
+                    <td>{{item.profile.firstName}}</td>
+                    <td>{{item.profile.lastName}}</td>
+                    <td>{{item.profile.gender}}</td>
+                    <td>
+                        <span>{{item.profile.address}}</span>
+                        <span>{{item.profile.zipcode}}</span>
+                        <span>{{item.profile.city}}</span>
+                    </td>
+                    <td>{{item.profile.phoneNumber}}</td>
+                    <td>{{item.profile.notes}}</td>
+                    <td class="actions">Action</td>
+                </tr>
+            </template>
             </tbody>
         </table>
     </template>
