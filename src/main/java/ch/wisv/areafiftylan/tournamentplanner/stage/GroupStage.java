@@ -18,4 +18,9 @@ public class GroupStage extends Stage {
     int currentRound;
 
     int maxTeamsPerGroup;
+
+    @Override
+    public void start() {
+
+    }
 }

@@ -6,7 +6,7 @@ import ch.wisv.areafiftylan.web.model.Sponsor;
 import ch.wisv.areafiftylan.web.model.Tournament;
 import ch.wisv.areafiftylan.web.service.EventServiceImpl;
 import ch.wisv.areafiftylan.web.service.SponsorServiceImpl;
-import ch.wisv.areafiftylan.web.service.TournamentServiceImpl;
+import ch.wisv.areafiftylan.web.service.WebTournamentServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -18,12 +18,12 @@ import java.util.Collection;
 @RequestMapping("/web")
 public class WebRestController {
 
-    TournamentServiceImpl tournamentService;
+    WebTournamentServiceImpl tournamentService;
     EventServiceImpl eventService;
     SponsorServiceImpl sponsorService;
 
     @Autowired
-    public WebRestController(TournamentServiceImpl tournamentService, EventServiceImpl eventService,
+    public WebRestController(WebTournamentServiceImpl tournamentService, EventServiceImpl eventService,
                              SponsorServiceImpl sponsorService) {
         this.tournamentService = tournamentService;
         this.eventService = eventService;

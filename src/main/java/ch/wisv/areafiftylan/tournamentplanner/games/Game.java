@@ -4,8 +4,7 @@ import javax.persistence.*;
 import java.util.List;
 
 @Entity
-@Inheritance(strategy = InheritanceType.JOINED)
-public abstract class Game {
+public class Game {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -17,4 +16,7 @@ public abstract class Game {
 
     @ElementCollection
     List<String> scoreAttributes;
+
+    @Enumerated
+    GameFormat format;
 }
