@@ -1,7 +1,6 @@
 package ch.wisv.areafiftylan.controller;
 
 import ch.wisv.areafiftylan.dto.TeamDTO;
-import ch.wisv.areafiftylan.exception.TeamNotFoundException;
 import ch.wisv.areafiftylan.model.Team;
 import ch.wisv.areafiftylan.model.User;
 import ch.wisv.areafiftylan.model.util.Role;
@@ -92,7 +91,7 @@ public class TeamRestController {
     @JsonView(View.Public.class)
     @RequestMapping(method = RequestMethod.GET, value = "/{teamId}")
     public Team getTeamById(@PathVariable Long teamId) {
-        return this.teamService.getTeamById(teamId).get();
+        return this.teamService.getTeamById(teamId);
     }
 
     /**
@@ -106,7 +105,7 @@ public class TeamRestController {
     @JsonView(View.Public.class)
     @RequestMapping(method = RequestMethod.GET, value = "/{teamId}/members")
     public Set<User> getTeamMembersById(@PathVariable Long teamId) {
-        Team team = teamService.getTeamById(teamId).orElseThrow(() -> new TeamNotFoundException(teamId));
+        Team team = teamService.getTeamById(teamId);
         return team.getMembers();
     }
 
@@ -122,7 +121,7 @@ public class TeamRestController {
     @PreAuthorize("hasRole('ADMIN')")
     @RequestMapping(method = RequestMethod.GET, value = "/{teamId}/members", params = "admin")
     public Set<User> getTeamMembersByIdAdmin(@PathVariable Long teamId) {
-        Team team = teamService.getTeamById(teamId).orElseThrow(() -> new TeamNotFoundException(teamId));
+        Team team = teamService.getTeamById(teamId);
         return team.getMembers();
     }
 
