@@ -2,7 +2,9 @@ package ch.wisv.areafiftylan.controller;
 
 
 import ch.wisv.areafiftylan.dto.UserDTO;
+import ch.wisv.areafiftylan.model.Seat;
 import ch.wisv.areafiftylan.model.User;
+import ch.wisv.areafiftylan.service.SeatService;
 import ch.wisv.areafiftylan.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -24,10 +26,12 @@ import static ch.wisv.areafiftylan.util.ResponseEntityBuilder.createResponseEnti
 public class CurrentUserRestController {
 
     private UserService userService;
+    private SeatService seatService;
 
     @Autowired
-    CurrentUserRestController(UserService userService) {
+    CurrentUserRestController(UserService userService, SeatService seatService) {
         this.userService = userService;
+        this.seatService = seatService;
     }
 
     /**
@@ -64,5 +68,12 @@ public class CurrentUserRestController {
         User user = (User) auth.getPrincipal();
         user = userService.replace(user.getId(), input);
         return createResponseEntity(HttpStatus.OK, "User successfully replaced", user);
+    }
+
+    @RequestMapping(value = "/seat", method = RequestMethod.GET)
+    public Seat getCurrentUserSeat(Authentication auth) {
+        User user = (User) auth.getPrincipal();
+
+        return seatService.getSeatByUsername(user.getUsername());
     }
 }
